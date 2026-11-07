@@ -1,0 +1,48 @@
+# Byte-compiled / optimized files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# User session tokens and private credentials
+# Файл с рабочими сессионными токенами (используйте tokens.example.json как шаблон)
+tokens.json
+!tokens.example.json
+
+# Generated schedule exports (сохраняем только .gitkeep для структуры папок)
+output/groups/*.json
+output/groups/*.xlsx
+output/groups/*.csv
+output/teachers/*.json
+output/teachers/*.xlsx
+output/teachers/*.csv
+1_max_messenger_parser/output/groups/*.json
+1_max_messenger_parser/output/groups/*.xlsx
+1_max_messenger_parser/output/groups/*.csv
+1_max_messenger_parser/output/teachers/*.json
+1_max_messenger_parser/output/teachers/*.xlsx
+1_max_messenger_parser/output/teachers/*.csv
+2_tstu_api_direct/output/groups/*.json
+2_tstu_api_direct/output/groups/*.xlsx
+2_tstu_api_direct/output/groups/*.csv
+2_tstu_api_direct/output/teachers/*.json
+2_tstu_api_direct/output/teachers/*.xlsx
+2_tstu_api_direct/output/teachers/*.csv
+
+# Virtual environments
+.env
+.venv
+env/
+venv/
+
+# Editor and IDE directories
+.idea/
+.vscode/
+*.swp
+*.bak
+*.tmp
+*.log
+
+# OS generated files
+.DS_Store
+Thumbs.db
+Desktop.ini

@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Расписание занятий ТвГТУ &mdash; Б.ПИН.ИИ.25.16</title>
+    <link rel="stylesheet" href="viewer_style.css">
+</head>
+<body>
+    <div class="container">
+        <header class="header-bar">
+            <span class="brand-badge">Вариант 2 &bull; Прямой шлюз ТвГТУ</span>
+            <h1 id="page-group-title">Сетка учебных занятий</h1>
+            <p class="subtitle" id="page-group-subtitle">Академическая группа Б.ПИН.ИИ.25.16 &bull; Семестровое расписание</p>
+        </header>
+
+        <!-- Верхний блок Hero Split Layout: спецификация шлюза и наклонная арт-композиция -->
+        <div class="hero-split">
+            <section class="hero-info-card">
+                <h2>Прямой шлюз университетского бота</h2>
+                <p class="subtitle" style="margin-bottom: 16px;">
+                    Сбор данных выполняется напрямую из официального шлюза ТвГТУ без промежуточных ключей доступа и авторизации.
+                </p>
+
+                <div class="hero-stats-row">
+                    <div class="hero-stat-box">
+                        <div class="hero-stat-label">Группа</div>
+                        <div class="hero-stat-value" id="hero-stat-group">Б.ПИН.ИИ.25.16</div>
+                    </div>
+                    <div class="hero-stat-box">
+                        <div class="hero-stat-label">Номер в реестре</div>
+                        <div class="hero-stat-value" id="hero-stat-id">1851</div>
+                    </div>
+                    <div class="hero-stat-box">
+                        <div class="hero-stat-label">Ступень</div>
+                        <div class="hero-stat-value" id="hero-stat-level">Бакалавриат</div>
+                    </div>
+                </div>
+
+                <div class="legend-bar" style="margin-bottom: 0;">
+                    <div class="legend-tag">
+                        <span class="pill-indicator pill-red">Красная</span>
+                        <span>Нечетная неделя</span>
+                    </div>
+                    <div class="legend-tag">
+                        <span class="pill-indicator pill-blue">Синяя</span>
+                        <span>Четная неделя</span>
+                    </div>
+                    <div class="legend-tag">
+                        <span class="pill-indicator">Обе</span>
+                        <span>Еженедельно</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Правая колонка: наклонная арт-композиция -->
+            <aside class="art-deck-container">
+                <div class="art-deck-glow"></div>
+
+                <div class="tilted-card deck-card-1">
+                    <img src="assets/image1.png" alt="Шлюз ТвГТУ" loading="lazy">
+                    <div class="tilted-caption">
+                        <span class="tilted-num">01</span>
+                        <span class="tilted-title">Шлюз ТвГТУ</span>
+                    </div>
+                </div>
+
+                <div class="tilted-card deck-card-2">
+                    <img src="assets/image2.png" alt="Сетка пар" loading="lazy">
+                    <div class="tilted-caption">
+                        <span class="tilted-num">02</span>
+                        <span class="tilted-title">Сетка пар</span>
+                    </div>
+                </div>
+
+                <div class="tilted-card deck-card-3">
+                    <img src="assets/image3.png" alt="Цветовая разметка" loading="lazy">
+                    <div class="tilted-caption">
+                        <span class="tilted-num">03</span>
+                        <span class="tilted-title">Цветовая разметка</span>
+                    </div>
+                </div>
+
+                <div class="tilted-card deck-card-4">
+                    <img src="assets/image4.png" alt="Экспорт в Excel" loading="lazy">
+                    <div class="tilted-caption">
+                        <span class="tilted-num">04</span>
+                        <span class="tilted-title">Экспорт в Excel</span>
+                    </div>
+                </div>
+            </aside>
+        </div>
+
+        <!-- Модуль выбора учебной группы -->
+        <section class="group-portal-card">
+            <span class="portal-badge">Каталог учебных групп</span>
+            <h2>Выбор академической группы</h2>
+            <p class="subtitle">Укажите группу или выберите фильтр по ступени образования (438 групп: магистратура, бакалавриат, специалитет, колледж СПО)</p>
+
+            <div class="level-tabs-bar">
+                <button class="level-tab-btn filter-btn active" data-level="ALL" onclick="SetGroupLevelFilter('ALL')">Все ступени</button>
+                <button class="level-tab-btn filter-btn" data-level="MASTER" onclick="SetGroupLevelFilter('MASTER')">Магистратура (М.)</button>
+                <button class="level-tab-btn filter-btn" data-level="BACHELOR" onclick="SetGroupLevelFilter('BACHELOR')">Бакалавриат (Б.)</button>
+                <button class="level-tab-btn filter-btn" data-level="SPECIALIST" onclick="SetGroupLevelFilter('SPECIALIST')">Специалитет (С.)</button>
+                <button class="level-tab-btn filter-btn" data-level="COLLEGE" onclick="SetGroupLevelFilter('COLLEGE')">Колледж (СПО)</button>
+            </div>
+
+            <div class="teacher-portal-controls">
+                <div class="input-with-button">
+                    <div class="search-input-wrapper">
+                        <input type="text" id="group-search-input" class="search-input" placeholder="Введите название группы (например: М.ПИН.РИС.25.09, Б.ПИН.ИИ.25.16)..." autocomplete="off">
+                        <div id="group-autocomplete-dropdown" class="autocomplete-dropdown" style="display: none;"></div>
+                    </div>
+                    <button class="btn-primary" onclick="ApplyGroupSearch()">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                        Выбрать группу
+                    </button>
+                    <button class="btn-ghost" onclick="ResetToDefaultGroup()">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg>
+                        Сбросить на Б.ПИН.ИИ.25.16
+                    </button>
+                </div>
+
+                <div class="quick-chips-row">
+                    <span class="quick-teachers-label">Быстрый переход:</span>
+                    <button class="quick-chip chip-master" onclick="SelectGroupByName('М.ПИН.РИС.25.09')">М.ПИН.РИС.25.09 (Магистр)</button>
+                    <button class="quick-chip chip-master" onclick="SelectGroupByName('М.ИВТ.ИПО.25.05')">М.ИВТ.ИПО.25.05 (Магистр)</button>
+                    <button class="quick-chip chip-master" onclick="SelectGroupByName('М.БСТ.ИДМ.25.10')">М.БСТ.ИДМ.25.10 (Магистр)</button>
+                    <button class="quick-chip" onclick="SelectGroupByName('Б.ПИН.ИИ.25.16')">Б.ПИН.ИИ.25.16 (Бакалавр)</button>
+                    <button class="quick-chip" onclick="SelectGroupByName('Б.ИВТ.ВМКСС.25.03')">Б.ИВТ.ВМКСС.25.03</button>
+                    <button class="quick-chip" onclick="SelectGroupByName('С.РСК.РСК.24.05')">С.РСК.РСК.24.05 (Специалитет)</button>
+                    <button class="quick-chip" onclick="SelectGroupByName('СПО.ИС.25.01')">СПО.ИС.25.01 (Колледж)</button>
+                </div>
+
+                <div id="active-group-summary" class="active-group-summary">
+                    <div>
+                        <div class="active-group-title" id="active-group-title-label">Текущая группа: Б.ПИН.ИИ.25.16</div>
+                        <div class="active-group-details" id="active-group-details-label">Ступень: Бакалавриат &bull; Идентификатор в реестре: 1851</div>
+                    </div>
+                    <span class="autocomplete-item-badge badge-bachelor" id="active-group-badge">Бакалавриат</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Интерактивный преподавательский модуль -->
+        <section class="teacher-portal-card">
+            <span class="portal-badge">Преподавательский модуль</span>
+            <h2>Вы преподаватель?</h2>
+            <p class="subtitle">Укажите фамилию для перехода в режим персонального расписания по всем вашим учебным группам и выгрузки в Excel</p>
+
+            <div class="teacher-portal-controls">
+                <div class="input-with-button">
+                    <div class="search-input-wrapper">
+                        <input type="text" id="teacher-search-input" class="search-input" placeholder="Введите фамилию или инициалы (например: Пиджакова, Крутских, Созонов, Лебедев)..." autocomplete="off">
+                        <div id="teacher-autocomplete-dropdown" class="autocomplete-dropdown" style="display: none;"></div>
+                    </div>
+                    <button class="btn-primary" onclick="ShowFullTeacherSchedule()">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                        Показать расписание преподавателя
+                    </button>
+                    <div class="export-buttons-group">
+                        <button class="btn-success" onclick="ExportTeacherExcel()" title="Скачать персональное расписание преподавателя в Excel">
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                            Экспорт в Excel
+                        </button>
+                        <button class="btn-secondary" onclick="ExportTeacherCsv()" title="Скачать расписание в формате CSV">
+                            CSV
+                        </button>
+                        <button class="btn-secondary" onclick="PrintSchedule()" title="Распечатать или сохранить в PDF">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+                            Печать / PDF
+                        </button>
+                    </div>
+                    <button class="btn-ghost" onclick="ResetToGroupMode()">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+                        Вернуться к группе
+                    </button>
+                </div>
+
+                <div class="quick-teachers-row" id="quick-teachers-container">
+                    <span class="quick-teachers-label">Быстрый выбор:</span>
+                    <button class="teacher-chip" onclick="SelectTeacher('Пиджакова')">Пиджакова Л. М.</button>
+                    <button class="teacher-chip" onclick="SelectTeacher('Крутских')">Крутских Е. И.</button>
+                    <button class="teacher-chip" onclick="SelectTeacher('Созонов')">Созонов М. К.</button>
+                    <button class="teacher-chip" onclick="SelectTeacher('Лебедев')">Лебедев В. В. (ХТФ)</button>
+                    <button class="teacher-chip" onclick="SelectTeacher('Лисничук')">Лисничук А. Б.</button>
+                    <button class="teacher-chip" onclick="SelectTeacher('Мальков')">Мальков А. А.</button>
+                    <button class="teacher-chip" onclick="SelectTeacher('Васильев')">Васильев А. И. (ИСФ)</button>
+                </div>
+
+                <div id="teacher-status-banner" class="teacher-status" style="display: none;"></div>
+            </div>
+        </section>
+
+        <!-- Контейнер расписания занятий группы -->
+        <div id="schedule-days-container">
+        <!-- Вторник -->
+        <article class="day-card">
+            <div class="day-header">Вторник</div>
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 80px;">Время</th>
+                        <th style="width: 100px;">Неделя</th>
+                        <th style="width: 110px;">Тип</th>
+                        <th>Дисциплина</th>
+                        <th style="width: 100px;">Аудитория</th>
+                        <th style="width: 180px;">Преподаватель</th>
+                        <th style="width: 120px;">Группа</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="col-time">08:30</td>
+                        <td><span class="pill-indicator pill-red">Красная</span></td>
+                        <td>Лабораторная</td>
+                        <td class="col-subject">Дифференциальные уравнения для моделирования (подгруппа 1)</td>
+                        <td class="col-classroom">Вц-205</td>
+                        <td class="col-teacher">Пиджакова Любовь Михайловна</td>
+                        <td class="col-group">Б.ПИН.ИИ.25.16</td>
+                    </tr>
+                    <tr>
+                        <td class="col-time">10:15</td>
+                        <td><span class="pill-indicator pill-red">Красная</span></td>
+                        <td>Лекция</td>
+                        <td class="col-subject">Дифференциальные уравнения для моделирования</td>
+                        <td class="col-classroom">Вц-205</td>
+                        <td class="col-teacher">Пиджакова Любовь Михайловна</td>
+                        <td class="col-group">Б.ПИН.ИИ.25.16</td>
+                    </tr>
+                    <tr>
+                        <td class="col-time">10:15</td>
+                        <td><span class="pill-indicator pill-blue">Синяя</span></td>
+                        <td>Практика</td>
+                        <td class="col-subject">Языки программирования для задач искусственного интеллекта</td>
+                        <td class="col-classroom">Вц-221</td>
+                        <td class="col-teacher">Крутских Елена Игоревна</td>
+                        <td class="col-group">Б.ПИН.ИИ.25.16</td>
+                    </tr>
+                    <tr>
+                        <td class="col-time">12:15</td>
+                        <td><span class="pill-indicator">Обе</span></td>
+                        <td>Лекция</td>
+                        <td class="col-subject">Языки программирования для задач искусственного интеллекта</td>
+                        <td class="col-classroom">Вц-221</td>
+                        <td class="col-teacher">Крутских Елена Игоревна</td>
+                        <td class="col-group">Б.ПИН.ИИ.25.16</td>
+                    </tr>
+                    <tr>
+                        <td class="col-time">14:00</td>
+                        <td><span class="pill-indicator pill-red">Красная</span></td>
+                        <td>Лабораторная</td>
+                        <td class="col-subject">Языки программирования для задач ИИ (подгруппа 1)</td>
+                        <td class="col-classroom">Вц-221</td>
+                        <td class="col-teacher">Крутских Елена Игоревна</td>
+                        <td class="col-group">Б.ПИН.ИИ.25.16</td>
+                    </tr>
+                    <tr>
+                        <td class="col-time">14:00</td>
+                        <td><span class="pill-indicator pill-blue">Синяя</span></td>
+                        <td>Лабораторная</td>
+                        <td class="col-subject">Языки программирования для задач ИИ (подгруппа 2)</td>
+                        <td class="col-classroom">Вц-221</td>
+                        <td class="col-teacher">Крутских Елена Игоревна</td>
+                        <td class="col-group">Б.ПИН.ИИ.25.16</td>
+                    </tr>
+                </tbody>
+            </table>
+        </article>
+
+        <!-- Среда -->
+        <article class="day-card">
+            <div class="day-header">Среда</div>
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 80px;">Время</th>
+                        <th style="width: 100px;">Неделя</th>
+                        <th style="width: 110px;">Тип</th>
+                        <th>Дисциплина</th>
+                        <th style="width: 100px;">Аудитория</th>
+                        <th style="width: 180px;">Преподаватель</th>
+                        <th style="width: 120px;">Группа</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="col-time">10:15</td>
+                        <td><span class="pill-indicator pill-red">Красная</span></td>
+                        <td>Лекция</td>
+                        <td class="col-subject">Специальные главы математического анализа</td>
+                        <td class="col-classroom">Вц-221</td>
+                        <td class="col-teacher">Пиджакова Любовь Михайловна</td>
+                        <td class="col-group">Б.ПИН.ИИ.25.16</td>
+                    </tr>
+                    <tr>
+                        <td class="col-time">10:15</td>
+                        <td><span class="pill-indicator pill-blue">Синяя</span></td>
+                        <td>Лекция</td>
+                        <td class="col-subject">Структуры и алгоритмы обработки данных</td>
+                        <td class="col-classroom">Вц-205</td>
+                        <td class="col-teacher">Мальков Александр Анатольевич</td>
+                        <td class="col-group">Б.ПИН.ИИ.25.16</td>
+                    </tr>
+                    <tr>
+                        <td class="col-time">12:15</td>
+                        <td><span class="pill-indicator">Обе</span></td>
+                        <td>Практика</td>
+                        <td class="col-subject">Специальные главы математического анализа</td>
+                        <td class="col-classroom">Вц-221</td>
+                        <td class="col-teacher">Пиджакова Любовь Михайловна</td>
+                        <td class="col-group">Б.ПИН.ИИ.25.16</td>
+                    </tr>
+                    <tr>
+                        <td class="col-time">14:00</td>
+                        <td><span class="pill-indicator pill-red">Красная</span></td>
+                        <td>Практика</td>
+                        <td class="col-subject">Структуры и алгоритмы обработки данных</td>
+                        <td class="col-classroom">Вц-217</td>
+                        <td class="col-teacher">Мальков Александр Анатольевич</td>
+                        <td class="col-group">Б.ПИН.ИИ.25.16</td>
+                    </tr>
+                    <tr>
+                        <td class="col-time">14:00</td>
+                        <td><span class="pill-indicator pill-blue">Синяя</span></td>
+                        <td>Лабораторная</td>
+                        <td class="col-subject">Структуры и алгоритмы обработки данных</td>
+                        <td class="col-classroom">Вц-217</td>
+                        <td class="col-teacher">Мальков А.А., Калабин А.Л.</td>
+                        <td class="col-group">Б.ПИН.ИИ.25.16</td>
+                    </tr>
+                </tbody>
+            </table>
+        </article>
+
+        <!-- Четверг -->
+        <article class="day-card">
+            <div class="day-header">Четверг</div>
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 80px;">Время</th>
+                        <th style="width: 100px;">Неделя</th>
+                        <th style="width: 110px;">Тип</th>
+                        <th>Дисциплина</th>
+                        <th style="width: 100px;">Аудитория</th>
+                        <th style="width: 180px;">Преподаватель</th>
+                        <th style="width: 120px;">Группа</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="col-time">08:30</td>
+                        <td><span class="pill-indicator pill-red">Красная</span></td>
+                        <td>Практика</td>
+                        <td class="col-subject">Психология</td>
+                        <td class="col-classroom">Ц-217</td>
+                        <td class="col-teacher">Мацюк Татьяна Борисовна</td>
+                        <td class="col-group">Б.ПИН.ИИ.25.16</td>
+                    </tr>
+                    <tr>
+                        <td class="col-time">10:15</td>
+                        <td><span class="pill-indicator pill-red">Красная</span></td>
+                        <td>Лекция</td>
+                        <td class="col-subject">Психология</td>
+                        <td class="col-classroom">Ц-217</td>
+                        <td class="col-teacher">Мацюк Татьяна Борисовна</td>
+                        <td class="col-group">Б.ПИН.ИИ.25.16</td>
+                    </tr>
+                    <tr>
+                        <td class="col-time">10:15</td>
+                        <td><span class="pill-indicator pill-blue">Синяя</span></td>
+                        <td>Практика</td>
+                        <td class="col-subject">Физика</td>
+                        <td class="col-classroom">Уч-414</td>
+                        <td class="col-teacher">Кривенко Ирина Валерьевна</td>
+                        <td class="col-group">Б.ПИН.ИИ.25.16</td>
+                    </tr>
+                    <tr>
+                        <td class="col-time">12:15</td>
+                        <td><span class="pill-indicator pill-blue">Синяя</span></td>
+                        <td>Лабораторная</td>
+                        <td class="col-subject">Физика</td>
+                        <td class="col-classroom">Уч-414</td>
+                        <td class="col-teacher">Кривенко И.В., Испирян С.Р.</td>
+                        <td class="col-group">Б.ПИН.ИИ.25.16</td>
+                    </tr>
+                    <tr>
+                        <td class="col-time">14:00</td>
+                        <td><span class="pill-indicator pill-blue">Синяя</span></td>
+                        <td>Практика</td>
+                        <td class="col-subject">Дифференциальные уравнения для моделирования</td>
+                        <td class="col-classroom">Вц-221</td>
+                        <td class="col-teacher">Пиджакова Любовь Михайловна</td>
+                        <td class="col-group">Б.ПИН.ИИ.25.16</td>
+                    </tr>
+                    <tr>
+                        <td class="col-time">15:45</td>
+                        <td><span class="pill-indicator pill-blue">Синяя</span></td>
+                        <td>Лабораторная</td>
+                        <td class="col-subject">Дифференциальные уравнения для моделирования</td>
+                        <td class="col-classroom">Вц-221</td>
+                        <td class="col-teacher">Пиджакова Любовь Михайловна</td>
+                        <td class="col-group">Б.ПИН.ИИ.25.16</td>
+                    </tr>
+                </tbody>
+            </table>
+        </article>
+
+        <!-- Пятница -->
+        <article class="day-card">
+            <div class="day-header">Пятница</div>
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 80px;">Время</th>
+                        <th style="width: 100px;">Неделя</th>
+                        <th style="width: 110px;">Тип</th>
+                        <th>Дисциплина</th>
+                        <th style="width: 100px;">Аудитория</th>
+                        <th style="width: 180px;">Преподаватель</th>
+                        <th style="width: 120px;">Группа</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="col-time">10:15</td>
+                        <td><span class="pill-indicator">Обе</span></td>
+                        <td>Практика</td>
+                        <td class="col-subject">Иностранный язык</td>
+                        <td class="col-classroom">Уч-422</td>
+                        <td class="col-teacher">Преподаватель кафедры</td>
+                        <td class="col-group">Б.ПИН.ИИ.25.16</td>
+                    </tr>
+                    <tr>
+                        <td class="col-time">12:15</td>
+                        <td><span class="pill-indicator">Обе</span></td>
+                        <td>Лекция</td>
+                        <td class="col-subject">Физика</td>
+                        <td class="col-classroom">ХТ-112</td>
+                        <td class="col-teacher">Кривенко Ирина Валерьевна</td>
+                        <td class="col-group">Б.ПИН.ИИ.25.16</td>
+                    </tr>
+                    <tr>
+                        <td class="col-time">14:00</td>
+                        <td><span class="pill-indicator">Обе</span></td>
+                        <td>Практика</td>
+                        <td class="col-subject">Элективная физическая культура и спорт</td>
+                        <td class="col-classroom">Спорткомплекс</td>
+                        <td class="col-teacher">Преподаватель кафедры</td>
+                        <td class="col-group">Б.ПИН.ИИ.25.16</td>
+                    </tr>
+                </tbody>
+            </table>
+        </article>
+
+        <!-- Суббота -->
+        <article class="day-card">
+            <div class="day-header">Суббота</div>
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 80px;">Время</th>
+                        <th style="width: 100px;">Неделя</th>
+                        <th style="width: 110px;">Тип</th>
+                        <th>Дисциплина</th>
+                        <th style="width: 100px;">Аудитория</th>
+                        <th style="width: 180px;">Преподаватель</th>
+                        <th style="width: 120px;">Группа</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="col-time">10:15</td>
+                        <td><span class="pill-indicator pill-red">Красная</span></td>
+                        <td>Лекция</td>
+                        <td class="col-subject">Теоретическая информатика</td>
+                        <td class="col-classroom">Вц-205</td>
+                        <td class="col-teacher">Лисничук Арина Бахытжановна</td>
+                        <td class="col-group">Б.ПИН.ИИ.25.16</td>
+                    </tr>
+                    <tr>
+                        <td class="col-time">10:15</td>
+                        <td><span class="pill-indicator pill-blue">Синяя</span></td>
+                        <td>Лекция</td>
+                        <td class="col-subject">Объектно-ориентированное программирование</td>
+                        <td class="col-classroom">Вц-205</td>
+                        <td class="col-teacher">Созонов Михаил Константинович</td>
+                        <td class="col-group">Б.ПИН.ИИ.25.16</td>
+                    </tr>
+                    <tr>
+                        <td class="col-time">12:15</td>
+                        <td><span class="pill-indicator pill-red">Красная</span></td>
+                        <td>Лабораторная</td>
+                        <td class="col-subject">Объектно-ориентированное программирование</td>
+                        <td class="col-classroom">Вц-217</td>
+                        <td class="col-teacher">Созонов Михаил Константинович</td>
+                        <td class="col-group">Б.ПИН.ИИ.25.16</td>
+                    </tr>
+                    <tr>
+                        <td class="col-time">12:15</td>
+                        <td><span class="pill-indicator pill-blue">Синяя</span></td>
+                        <td>Практика</td>
+                        <td class="col-subject">Объектно-ориентированное программирование</td>
+                        <td class="col-classroom">Вц-221</td>
+                        <td class="col-teacher">Созонов Михаил Константинович</td>
+                        <td class="col-group">Б.ПИН.ИИ.25.16</td>
+                    </tr>
+                    <tr>
+                        <td class="col-time">14:00</td>
+                        <td><span class="pill-indicator pill-red">Красная</span></td>
+                        <td>Практика</td>
+                        <td class="col-subject">Теоретическая информатика</td>
+                        <td class="col-classroom">Вц-221</td>
+                        <td class="col-teacher">Лисничук Арина Бахытжановна</td>
+                        <td class="col-group">Б.ПИН.ИИ.25.16</td>
+                    </tr>
+                    <tr>
+                        <td class="col-time">14:00</td>
+                        <td><span class="pill-indicator pill-blue">Синяя</span></td>
+                        <td>Лабораторная</td>
+                        <td class="col-subject">Теоретическая информатика</td>
+                        <td class="col-classroom">Вц-217</td>
+                        <td class="col-teacher">Лисничук Арина Бахытжановна</td>
+                        <td class="col-group">Б.ПИН.ИИ.25.16</td>
+                    </tr>
+                </tbody>
+            </table>
+        </article>
+        </div><!-- end of schedule-days-container -->
+    </div>
+
+    <!-- Клиентский скрипт фильтрации и выгрузки в Excel -->
+    <script src="viewer_app.js"></script>
+</body>
+</html>

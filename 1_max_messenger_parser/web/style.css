@@ -1,0 +1,1566 @@
+/* style.css Стили интерфейса управления сессией MAX
+ * Дизайн-система: Altitude (Midnight Financial Editorial)
+ * Создан 07.11.2027 Кафедра программного обеспечения (ФИТ ТвГТУ)
+ */
+
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Inter:wght@400;500;600&family=Libre+Baskerville:wght@400;500&display=swap');
+
+:root {
+    --bg-carbon: #181818;
+    --bg-obsidian: #111111;
+    --bg-graphite: #1f1f1f;
+    --bg-slate: #262626;
+    --bg-iron: #323232;
+    --text-bone: #eeeeee;
+    --text-fog: #a4a19b;
+    --text-smoke: #5e5d59;
+    --border-pewter: #4b4b4b;
+    --border-iron: #323232;
+    --border-slate: #262626;
+    --accent-blue: #2b7fff;
+    --accent-blue-hover: #3d8cff;
+    --accent-blue-active: #1a6fe8;
+    --accent-navy: #1a365d;
+    --accent-emerald: #10b981;
+    --accent-emerald-hover: #34d399;
+    --accent-emerald-active: #059669;
+    --accent-purple: #8b5cf6;
+    --accent-purple-hover: #a855f7;
+    --btn-height-sm: 30px;
+    --btn-height-md: 38px;
+    --btn-height-lg: 42px;
+    --radius-sm: 4px;
+    --radius-md: 6px;
+    --radius-lg: 8px;
+    --transition-fast: 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: var(--bg-carbon);
+    color: var(--text-bone);
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+    padding: 40px 24px;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Шапка документа */
+.header-bar {
+    border-bottom: 1px solid var(--border-iron);
+    padding-bottom: 28px;
+    margin-bottom: 36px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.header-left {
+    max-width: 720px;
+}
+
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.brand-badge {
+    display: inline-block;
+    background-color: var(--bg-iron);
+    color: var(--text-bone);
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 4px 8px;
+    border-radius: 4px;
+    margin-bottom: 12px;
+    border: 1px solid var(--border-pewter);
+}
+
+h1 {
+    font-family: 'Libre Baskerville', serif;
+    font-size: 38px;
+    font-weight: 400;
+    line-height: 1.15;
+    letter-spacing: -0.025em;
+    color: var(--text-bone);
+    margin-bottom: 10px;
+}
+
+h2 {
+    font-family: 'Libre Baskerville', serif;
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 1.3;
+    letter-spacing: -0.025em;
+    color: var(--text-bone);
+    margin-bottom: 16px;
+}
+
+p.subtitle {
+    font-size: 15px;
+    color: var(--text-fog);
+    line-height: 1.4;
+}
+
+/* Верхний блок Hero Split Layout: спецификация шлюза и наклонная арт-композиция */
+.hero-split {
+    display: grid;
+    grid-template-columns: 1.15fr 0.85fr;
+    gap: 40px;
+    align-items: start;
+    margin-bottom: 32px;
+}
+
+.hero-info-card {
+    background-color: var(--bg-graphite);
+    border: 1px solid var(--border-iron);
+    border-radius: 8px;
+    padding: 24px;
+}
+
+.hero-stats-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin: 20px 0;
+}
+
+.hero-stat-box {
+    background-color: var(--bg-slate);
+    border: 1px solid var(--border-iron);
+    border-radius: 4px;
+    padding: 12px;
+}
+
+.hero-stat-label {
+    font-size: 11px;
+    color: var(--text-smoke);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 4px;
+}
+
+.hero-stat-value {
+    font-family: 'Fira Code', monospace;
+    font-size: 15px;
+    color: var(--accent-blue);
+    font-weight: 600;
+}
+
+/* Контейнер наклонной арт-композиции */
+.art-deck-container {
+    position: relative;
+    width: 100%;
+    height: 380px;
+    perspective: 1200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.art-deck-glow {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, rgba(43, 127, 255, 0.07) 0%, rgba(26, 54, 93, 0.03) 50%, transparent 75%);
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* Наклонные арт-карточки (16px radius, hover elevation) */
+.tilted-card {
+    position: absolute;
+    width: 200px;
+    height: 280px;
+    border-radius: 16px;
+    overflow: hidden;
+    background-color: var(--bg-graphite);
+    border: 1px solid var(--border-iron);
+    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.6), 0 2px 8px rgba(0, 0, 0, 0.3);
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), 
+                box-shadow 0.4s ease, 
+                border-color 0.3s ease;
+    cursor: pointer;
+    transform-origin: center center;
+}
+
+.tilted-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+    filter: brightness(0.88) contrast(1.08);
+    transition: filter 0.4s ease, transform 0.4s ease;
+}
+
+.tilted-caption {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 10px 12px;
+    background: linear-gradient(to top, rgba(17, 17, 17, 0.95) 0%, rgba(17, 17, 17, 0.75) 60%, transparent 100%);
+    backdrop-filter: blur(6px);
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.tilted-num {
+    font-family: 'Fira Code', monospace;
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--accent-blue);
+    letter-spacing: 0.05em;
+}
+
+.tilted-title {
+    font-family: 'Inter', sans-serif;
+    font-size: 10px;
+    color: var(--text-bone);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.deck-card-1 {
+    top: 25px;
+    left: 20px;
+    transform: rotate(-6deg) translateY(0);
+    z-index: 4;
+}
+
+.deck-card-2 {
+    top: 10px;
+    right: 30px;
+    transform: rotate(5deg) translateY(8px);
+    z-index: 3;
+}
+
+.deck-card-3 {
+    bottom: 35px;
+    left: 45px;
+    transform: rotate(-3deg) translateY(12px);
+    z-index: 2;
+}
+
+.deck-card-4 {
+    bottom: 15px;
+    right: 25px;
+    transform: rotate(4deg) translateY(20px);
+    z-index: 1;
+}
+
+.tilted-card:hover {
+    transform: rotate(0deg) scale(1.06) translateY(-10px) !important;
+    z-index: 50 !important;
+    border-color: var(--accent-blue);
+    box-shadow: 0 24px 48px rgba(0, 0, 0, 0.8), 0 0 20px rgba(43, 127, 255, 0.35);
+}
+
+.tilted-card:hover img {
+    filter: brightness(1.05) contrast(1.08);
+}
+
+/* Карточки интерфейса */
+.card {
+    background-color: var(--bg-graphite);
+    border: 1px solid var(--border-iron);
+    border-radius: 8px;
+    padding: 24px;
+    margin-bottom: 24px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+}
+
+/* Пояснительные информационные блоки */
+.editorial-note {
+    background-color: var(--bg-obsidian);
+    border: 1px solid var(--border-iron);
+    border-left: 3px solid var(--accent-blue);
+    border-radius: 4px;
+    padding: 14px 16px;
+    font-size: 13px;
+    color: var(--text-fog);
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+.editorial-note strong {
+    color: var(--text-bone);
+    font-weight: 500;
+}
+
+.editorial-note code {
+    font-family: 'Fira Code', monospace;
+    font-size: 12px;
+    background-color: var(--bg-slate);
+    padding: 2px 5px;
+    border-radius: 3px;
+    color: var(--text-bone);
+    border: 1px solid var(--border-iron);
+}
+
+.editorial-note kbd {
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    background-color: var(--bg-iron);
+    border: 1px solid var(--border-pewter);
+    border-radius: 3px;
+    padding: 1px 5px;
+    color: var(--text-bone);
+}
+
+/* Сетка параметров сессии */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.stat-item {
+    background-color: var(--bg-slate);
+    border: 1px solid var(--border-iron);
+    border-radius: 4px;
+    padding: 12px 14px;
+}
+
+.stat-label {
+    font-size: 10px;
+    color: var(--text-smoke);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 6px;
+}
+
+.stat-value {
+    font-family: 'Fira Code', monospace;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-bone);
+}
+
+/* Поля ввода */
+textarea, input[type="text"] {
+    width: 100%;
+    background-color: var(--bg-obsidian);
+    border: 1px solid var(--border-iron);
+    border-radius: 4px;
+    color: var(--text-bone);
+    font-family: 'Fira Code', monospace;
+    font-size: 13px;
+    padding: 12px;
+    margin-bottom: 16px;
+    outline: none;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+textarea::placeholder, input[type="text"]::placeholder {
+    color: var(--text-smoke);
+}
+
+textarea:focus, input[type="text"]:focus {
+    border-color: var(--accent-blue);
+    box-shadow: 0 0 0 2px rgba(43, 127, 255, 0.2);
+}
+
+/* ==========================================================================
+   СИСТЕМА КНОПОК И ЭЛЕМЕНТОВ УПРАВЛЕНИЯ (Midnight Financial Editorial)
+   Единая сетка высот, аккуратные скругления, микроанимации и четкие рамки
+   ========================================================================== */
+
+.button-row {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-top: 14px;
+}
+
+/* Базовые свойства для кнопок и ссылок-кнопок */
+.btn-primary,
+.btn-accent,
+.btn-ghost,
+.btn-secondary,
+.btn-success {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    height: var(--btn-height-md);
+    min-height: var(--btn-height-md);
+    padding: 0 18px;
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 1;
+    text-align: center;
+    text-decoration: none;
+    white-space: nowrap;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    user-select: none;
+    box-sizing: border-box;
+    transition: background-color var(--transition-fast),
+                border-color var(--transition-fast),
+                box-shadow var(--transition-fast),
+                transform var(--transition-fast),
+                color var(--transition-fast);
+}
+
+/* Состояния доступности и фокуса с клавиатуры */
+.btn-primary:focus-visible,
+.btn-accent:focus-visible,
+.btn-ghost:focus-visible,
+.btn-secondary:focus-visible,
+.btn-success:focus-visible,
+.btn-copy:focus-visible,
+.level-tab-btn:focus-visible,
+.quick-chip:focus-visible {
+    outline: 2px solid var(--accent-blue);
+    outline-offset: 2px;
+}
+
+/* 1. Флагманская кнопка действия (Primary Button - Cobalt Electric) */
+.btn-primary {
+    background: linear-gradient(180deg, #2b7fff 0%, #1e6bdf 100%);
+    border: 1px solid rgba(255, 255, 255, 0.22);
+    color: #ffffff;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.35), 
+                inset 0 1px 0 rgba(255, 255, 255, 0.25),
+                0 0 0 1px rgba(43, 127, 255, 0.25);
+    letter-spacing: 0.01em;
+}
+
+.btn-primary:hover {
+    background: linear-gradient(180deg, var(--accent-blue-hover) 0%, #2578f5 100%);
+    border-color: rgba(255, 255, 255, 0.35);
+    box-shadow: 0 4px 14px rgba(43, 127, 255, 0.45), 
+                inset 0 1px 0 rgba(255, 255, 255, 0.35),
+                0 0 0 1px rgba(64, 142, 255, 0.5);
+    transform: translateY(-1px);
+    color: #ffffff;
+}
+
+.btn-primary:active {
+    background: linear-gradient(180deg, var(--accent-blue-active) 0%, #175ec2 100%);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.5), inset 0 1px 1px rgba(0, 0, 0, 0.2);
+    transform: translateY(1px);
+}
+
+/* 2. Акцентная кнопка действия (Accent Button - Emerald / Excel / Bot) */
+.btn-accent {
+    background: linear-gradient(180deg, #10b981 0%, #059669 100%);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    color: #ffffff;
+    font-weight: 600;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.35), 
+                inset 0 1px 0 rgba(255, 255, 255, 0.3),
+                0 0 0 1px rgba(16, 185, 129, 0.25);
+    letter-spacing: 0.01em;
+}
+
+.btn-accent:hover {
+    background: linear-gradient(180deg, var(--accent-emerald-hover) 0%, #10b981 100%);
+    border-color: rgba(255, 255, 255, 0.4);
+    box-shadow: 0 4px 16px rgba(16, 185, 129, 0.45), 
+                inset 0 1px 0 rgba(255, 255, 255, 0.4);
+    transform: translateY(-1px);
+    color: #ffffff;
+}
+
+.btn-accent:active {
+    background: linear-gradient(180deg, var(--accent-emerald-active) 0%, #047857 100%);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.5), inset 0 1px 1px rgba(0, 0, 0, 0.2);
+    transform: translateY(1px);
+}
+
+/* 3. Прозрачная контурная кнопка (Ghost Button - Midnight Slate) */
+.btn-ghost {
+    background-color: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--border-pewter);
+    color: var(--text-bone);
+    backdrop-filter: blur(4px);
+}
+
+.btn-ghost:hover {
+    background-color: var(--bg-slate);
+    border-color: #ffffff;
+    color: #ffffff;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
+    transform: translateY(-1px);
+}
+
+.btn-ghost:active {
+    background-color: var(--bg-iron);
+    border-color: var(--border-pewter);
+    color: var(--text-bone);
+    transform: translateY(1px);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+/* 4. Вторичная кнопка (Secondary Button - Graphite Surface) */
+.btn-secondary {
+    background-color: var(--bg-slate);
+    border: 1px solid var(--border-iron);
+    color: var(--text-bone);
+}
+
+.btn-secondary:hover {
+    background-color: var(--bg-iron);
+    border-color: var(--border-pewter);
+    color: #ffffff;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.btn-secondary:active {
+    background-color: var(--bg-slate);
+    transform: translateY(1px);
+    box-shadow: none;
+}
+
+/* 5. Кнопка успеха (Success Button - Excel Emerald) */
+.btn-success {
+    background-color: #107c41;
+    color: #ffffff;
+    border: 1px solid #107c41;
+}
+
+.btn-success:hover {
+    background-color: #0d6334;
+    border-color: #0d6334;
+    box-shadow: 0 0 12px rgba(16, 124, 65, 0.4);
+    transform: translateY(-1px);
+}
+
+.btn-success:active {
+    background-color: #0a4f29;
+    transform: translateY(1px);
+}
+
+/* Центрирование SVG иконок внутри всех кнопок */
+button svg,
+.btn-primary svg,
+.btn-accent svg,
+.btn-ghost svg,
+.btn-secondary svg,
+.btn-success svg,
+.btn-copy svg {
+    display: inline-block;
+    vertical-align: middle;
+    flex-shrink: 0;
+}
+
+/* Окно терминала для просмотра JSON */
+.terminal-window {
+    background-color: var(--bg-obsidian);
+    border: 1px solid var(--border-iron);
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 24px;
+}
+
+.terminal-header {
+    background-color: var(--bg-graphite);
+    padding: 8px 12px;
+    border-bottom: 1px solid var(--border-iron);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.terminal-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: var(--text-smoke);
+}
+
+.terminal-title {
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    color: var(--text-fog);
+    margin-left: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+pre.terminal-content {
+    background-color: var(--bg-obsidian);
+    color: var(--text-bone);
+    font-family: 'Fira Code', monospace;
+    font-size: 12px;
+    line-height: 1.6;
+    padding: 16px;
+    overflow-x: auto;
+}
+
+/* Сообщения статуса и баннеры */
+.status-banner,
+.teacher-status {
+    padding: 12px 16px;
+    border-radius: 4px;
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    line-height: 1.5;
+    border: 1px solid var(--border-iron);
+    background-color: var(--bg-slate);
+    color: var(--text-bone);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.status-banner {
+    display: none;
+    margin-top: 16px;
+}
+
+.status-success,
+.status-banner.status-success,
+.teacher-status.status-success {
+    background-color: rgba(43, 127, 255, 0.08);
+    border: 1px solid var(--accent-navy);
+    border-left: 3px solid var(--accent-blue);
+    color: var(--text-bone);
+}
+
+.status-info,
+.status-banner.status-info {
+    background-color: rgba(43, 127, 255, 0.06);
+    border: 1px solid var(--border-pewter);
+    border-left: 3px solid var(--accent-blue);
+    color: var(--text-bone);
+}
+
+.status-error,
+.status-banner.status-error,
+.status-empty,
+.teacher-status.status-empty {
+    background-color: rgba(139, 58, 58, 0.15);
+    border: 1px solid #8b3a3a;
+    border-left: 3px solid #ef4444;
+    color: #ffb4b4;
+}
+
+.status-action-hint {
+    font-family: 'Fira Code', monospace;
+    font-size: 11px;
+    color: var(--accent-blue);
+    font-weight: 600;
+}
+
+/* Баннер режима преподавателя */
+.teacher-mode-banner {
+    background: linear-gradient(135deg, rgba(26, 54, 93, 0.4) 0%, rgba(43, 127, 255, 0.12) 100%);
+    border: 1px solid var(--accent-blue);
+    border-radius: 8px;
+    padding: 18px 22px;
+    margin-bottom: 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+}
+
+.teacher-mode-info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.teacher-mode-pill {
+    display: inline-block;
+    align-self: flex-start;
+    font-family: 'Fira Code', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    padding: 3px 8px;
+    border-radius: 4px;
+    background-color: var(--accent-navy);
+    color: #ffffff;
+    border: 1px solid var(--accent-blue);
+}
+
+.teacher-mode-name {
+    font-family: 'Libre Baskerville', serif;
+    font-size: 20px;
+    font-weight: 500;
+    color: var(--text-bone);
+}
+
+.teacher-mode-meta {
+    font-size: 13px;
+    color: var(--text-fog);
+}
+
+.teacher-groups-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 4px;
+}
+
+.group-tag-chip {
+    font-family: 'Fira Code', monospace;
+    font-size: 11px;
+    padding: 2px 7px;
+    border-radius: 3px;
+    background-color: var(--bg-iron);
+    color: var(--accent-blue);
+    border: 1px solid var(--border-pewter);
+}
+
+/* ==========================================================================
+   ДИЗАЙНЕРСКАЯ АРТ-КОМПОЗИЦИЯ: ПАРЯЩИЕ НАКЛОННЫЕ КАРТОЧКИ (Tilted Art Deck)
+   Полноценный художественный блок с динамическим наклоном, 16px скруглением,
+   атмосферной глубиной и интерактивным разворотом при наведении.
+   ========================================================================== */
+
+.art-showcase-column {
+    position: sticky;
+    top: 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.art-deck-wrapper {
+    position: relative;
+    width: 100%;
+    height: 600px;
+    perspective: 1200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+/* Фоновое мягкое радиальное свечение (Ambient Glow) */
+.art-deck-wrapper::before {
+    content: '';
+    position: absolute;
+    width: 380px;
+    height: 480px;
+    background: radial-gradient(circle, rgba(43, 127, 255, 0.06) 0%, rgba(26, 54, 93, 0.04) 40%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* Базовый класс наклонной арт-карточки */
+.tilted-art-card {
+    position: absolute;
+    width: 260px;
+    height: 350px;
+    border-radius: 16px; /* Строго 16px по design.md для крупных визуалов */
+    overflow: hidden;
+    background-color: var(--bg-graphite);
+    border: 1px solid var(--border-iron);
+    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.5), 0 2px 8px rgba(0, 0, 0, 0.3);
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), 
+                box-shadow 0.4s ease, 
+                border-color 0.3s ease,
+                z-index 0s;
+    cursor: pointer;
+    transform-origin: center center;
+}
+
+.tilted-art-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+    filter: brightness(0.88) contrast(1.08);
+    transition: filter 0.4s ease, transform 0.4s ease;
+}
+
+/* Тонкая матовая плашка-бирка внизу картинки */
+.tilted-art-caption {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 12px 14px;
+    background: linear-gradient(to top, rgba(17, 17, 17, 0.95) 0%, rgba(17, 17, 17, 0.75) 60%, transparent 100%);
+    backdrop-filter: blur(6px);
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.tilted-art-num {
+    font-family: 'Fira Code', monospace;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--accent-blue);
+    letter-spacing: 0.05em;
+}
+
+.tilted-art-title {
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    color: var(--text-bone);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+/* Координаты и индивидуальные углы наклона карточек в веере */
+.art-card-1 {
+    top: 40px;
+    left: 10px;
+    transform: rotate(-6deg) translateY(0) translateZ(0);
+    z-index: 4;
+}
+
+.art-card-2 {
+    top: 15px;
+    right: 20px;
+    transform: rotate(5deg) translateY(10px) translateZ(-20px);
+    z-index: 3;
+}
+
+.art-card-3 {
+    bottom: 50px;
+    left: 30px;
+    transform: rotate(-3deg) translateY(20px) translateZ(-40px);
+    z-index: 2;
+}
+
+.art-card-4 {
+    bottom: 25px;
+    right: 15px;
+    transform: rotate(4deg) translateY(30px) translateZ(-60px);
+    z-index: 1;
+}
+
+/* Эффект парения при наведении курсора:
+   карточка выпрямляется, приподнимается над остальными и подсвечивается тонким синим контуром */
+.tilted-art-card:hover {
+    transform: rotate(0deg) scale(1.08) translateY(-14px) translateZ(50px) !important;
+    z-index: 50 !important;
+    border-color: var(--accent-blue);
+    box-shadow: 0 28px 56px rgba(0, 0, 0, 0.75), 0 0 24px rgba(43, 127, 255, 0.35);
+}
+
+.tilted-art-card:hover img {
+    filter: brightness(1.02) contrast(1.08);
+    transform: scale(1.03);
+}
+
+.art-quote {
+    padding: 16px;
+    background-color: var(--bg-graphite);
+    border: 1px solid var(--border-iron);
+    border-radius: 8px;
+    font-family: 'Libre Baskerville', serif;
+    font-style: italic;
+    font-size: 13px;
+    color: var(--text-fog);
+    line-height: 1.6;
+    text-align: center;
+}
+
+/* ==========================================================================
+   СТИЛИ ПОШАГОВОГО МАСТЕРА (WIZARD) И КАРТОЧЕК ДЕЙСТВИЙ
+   ========================================================================== */
+.section-tag {
+    display: inline-block;
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--accent-blue);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 6px;
+}
+
+.wizard-steps-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-top: 16px;
+    align-items: stretch;
+}
+
+.wizard-step-card {
+    background-color: var(--bg-slate);
+    border: 1px solid var(--border-iron);
+    border-radius: var(--radius-lg);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: border-color var(--transition-fast),
+                box-shadow var(--transition-fast),
+                transform var(--transition-fast);
+}
+
+.wizard-step-card:hover {
+    border-color: var(--border-pewter);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.28);
+    transform: translateY(-2px);
+}
+
+.step-num-badge {
+    align-self: flex-start;
+    display: inline-flex;
+    align-items: center;
+    background-color: var(--accent-navy);
+    color: #93c5fd;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 3px 8px;
+    border-radius: var(--radius-sm);
+    border: 1px solid rgba(43, 127, 255, 0.4);
+    margin-bottom: 12px;
+}
+
+.step-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text-bone);
+    margin-bottom: 8px;
+    letter-spacing: -0.01em;
+}
+
+.step-desc {
+    font-size: 12.5px;
+    color: var(--text-fog);
+    line-height: 1.55;
+    flex-grow: 1;
+}
+
+/* Контейнер нижнего действия карточки шага мастера */
+.step-action {
+    margin-top: 16px;
+    width: 100%;
+}
+
+.step-action .btn-primary,
+.step-action .btn-accent {
+    width: 100%;
+    height: 40px;
+    min-height: 40px;
+}
+
+.step-action .code-snippet-box {
+    margin: 0;
+    height: 40px;
+    min-height: 40px;
+}
+
+/* Блок кодового сниппета с кнопкой копирования */
+.code-snippet-box {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    background-color: var(--bg-obsidian);
+    border: 1px solid var(--border-iron);
+    border-radius: var(--radius-md);
+    padding: 6px 8px 6px 12px;
+    min-height: 40px;
+    box-sizing: border-box;
+    transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.code-snippet-box:hover {
+    border-color: var(--border-pewter);
+}
+
+.code-snippet-box:focus-within {
+    border-color: var(--accent-blue);
+    box-shadow: 0 0 0 2px rgba(43, 127, 255, 0.2);
+}
+
+.code-snippet-box code {
+    flex: 1 1 auto;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-family: 'Fira Code', monospace;
+    font-size: 11.5px;
+    line-height: 1.4;
+    color: #4ade80;
+    background: transparent;
+    border: none;
+    padding: 0;
+    user-select: all;
+}
+
+/* Кнопка копирования скрипта в буфер */
+.btn-copy {
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    height: var(--btn-height-sm);
+    padding: 0 11px;
+    background-color: var(--bg-slate);
+    border: 1px solid var(--border-pewter);
+    border-radius: var(--radius-sm);
+    color: var(--text-bone);
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    font-weight: 500;
+    cursor: pointer;
+    white-space: nowrap;
+    user-select: none;
+    transition: background-color var(--transition-fast),
+                border-color var(--transition-fast),
+                box-shadow var(--transition-fast),
+                transform var(--transition-fast),
+                color var(--transition-fast);
+}
+
+.btn-copy:hover {
+    background-color: var(--bg-iron);
+    border-color: var(--accent-blue);
+    color: #ffffff;
+    box-shadow: 0 2px 8px rgba(43, 127, 255, 0.25);
+    transform: translateY(-1px);
+}
+
+.btn-copy:active {
+    background-color: var(--bg-slate);
+    transform: translateY(1px) scale(0.97);
+    box-shadow: none;
+}
+
+/* Вкладки уровней групп */
+.level-tabs-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 14px;
+}
+
+.level-tab-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 34px;
+    padding: 0 14px;
+    background-color: var(--bg-obsidian);
+    border: 1px solid var(--border-iron);
+    border-radius: var(--radius-md);
+    color: var(--text-fog);
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    user-select: none;
+    white-space: nowrap;
+    transition: background-color var(--transition-fast),
+                border-color var(--transition-fast),
+                box-shadow var(--transition-fast),
+                transform var(--transition-fast),
+                color var(--transition-fast);
+}
+
+.level-tab-btn:hover {
+    background-color: var(--bg-slate);
+    border-color: var(--border-pewter);
+    color: var(--text-bone);
+    transform: translateY(-1px);
+}
+
+.level-tab-btn:active {
+    transform: translateY(1px);
+}
+
+.level-tab-btn.active {
+    background: linear-gradient(180deg, #1e3a8a 0%, #172554 100%);
+    border-color: var(--accent-blue);
+    color: #ffffff;
+    font-weight: 600;
+    box-shadow: 0 2px 8px rgba(43, 127, 255, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+    transform: translateY(0);
+}
+
+/* Поле поиска и автодополнение */
+.search-input {
+    width: 100%;
+    background-color: var(--bg-obsidian);
+    border: 1px solid var(--border-pewter);
+    border-radius: var(--radius-md);
+    padding: 10px 14px;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    color: var(--text-bone);
+    outline: none;
+    transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.search-input:focus {
+    border-color: var(--accent-blue);
+    box-shadow: 0 0 0 2px rgba(43, 127, 255, 0.2);
+}
+
+.autocomplete-dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background-color: var(--bg-graphite);
+    border: 1px solid var(--border-pewter);
+    border-radius: var(--radius-md);
+    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.8), 0 0 16px rgba(43, 127, 255, 0.12);
+    max-height: 280px;
+    overflow-y: auto;
+    z-index: 100;
+    margin-top: 4px;
+}
+
+.autocomplete-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--border-iron);
+    cursor: pointer;
+    transition: background-color var(--transition-fast);
+}
+
+.autocomplete-item:last-child {
+    border-bottom: none;
+}
+
+.autocomplete-item:hover {
+    background-color: var(--bg-slate);
+}
+
+.autocomplete-item-name {
+    font-weight: 500;
+    color: var(--text-bone);
+}
+
+.autocomplete-item-dept {
+    font-size: 11px;
+    color: var(--text-fog);
+    margin-top: 2px;
+}
+
+.autocomplete-item-badge {
+    font-family: 'Fira Code', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    font-weight: 600;
+    padding: 2px 6px;
+    border-radius: var(--radius-sm);
+    background-color: var(--bg-iron);
+    color: var(--text-fog);
+    border: 1px solid var(--border-pewter);
+    white-space: nowrap;
+}
+
+.autocomplete-item-badge.badge-master {
+    background-color: #3b2046;
+    border-color: #a855f7;
+    color: #f3e8ff;
+}
+
+.autocomplete-item-badge.badge-bachelor {
+    background-color: #1c2d4a;
+    border-color: #3b82f6;
+    color: #dbeafe;
+}
+
+.autocomplete-item-badge.badge-specialist {
+    background-color: #3d2d1d;
+    border-color: #f59e0b;
+    color: #fef3c7;
+}
+
+.autocomplete-item-badge.badge-college {
+    background-color: #1d3d2f;
+    border-color: #10b981;
+    color: #d1fae5;
+}
+
+.autocomplete-item-badge.badge-postgrad {
+    background-color: #2b2b2b;
+    border-color: #71717a;
+    color: #e4e4e7;
+}
+
+.autocomplete-empty {
+    padding: 14px;
+    text-align: center;
+    color: var(--text-fog);
+    font-size: 13px;
+}
+
+/* Чипы быстрого выбора */
+.quick-chips-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    margin-top: 14px;
+}
+
+.chip-label {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-smoke);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-right: 2px;
+}
+
+.quick-chip {
+    display: inline-flex;
+    align-items: center;
+    height: 28px;
+    padding: 0 10px;
+    background-color: var(--bg-obsidian);
+    border: 1px solid var(--border-pewter);
+    border-radius: var(--radius-md);
+    color: var(--text-bone);
+    font-family: 'Fira Code', monospace;
+    font-size: 11.5px;
+    font-weight: 500;
+    cursor: pointer;
+    user-select: none;
+    white-space: nowrap;
+    transition: background-color var(--transition-fast),
+                border-color var(--transition-fast),
+                box-shadow var(--transition-fast),
+                transform var(--transition-fast),
+                color var(--transition-fast);
+}
+
+.quick-chip:hover {
+    background-color: var(--bg-slate);
+    border-color: var(--accent-blue);
+    color: #ffffff;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.35), 0 0 8px rgba(43, 127, 255, 0.2);
+}
+
+.quick-chip:active {
+    transform: translateY(0);
+    box-shadow: none;
+}
+
+.quick-chip.chip-master {
+    background-color: rgba(139, 92, 246, 0.1);
+    border-color: rgba(168, 85, 247, 0.38);
+    color: #e9d5ff;
+}
+
+.quick-chip.chip-master:hover {
+    background-color: rgba(139, 92, 246, 0.22);
+    border-color: #a855f7;
+    color: #ffffff;
+    box-shadow: 0 4px 14px rgba(168, 85, 247, 0.35);
+    transform: translateY(-2px);
+}
+
+/* Карточка активной группы */
+.active-group-card {
+    background-color: var(--bg-obsidian);
+    border: 1px solid var(--border-pewter);
+    border-left: 4px solid var(--accent-blue);
+    border-radius: var(--radius-lg);
+    padding: 18px 22px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-top: 18px;
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.25);
+    transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.active-group-card:hover {
+    border-color: var(--accent-blue);
+    box-shadow: 0 6px 24px rgba(43, 127, 255, 0.12), 0 4px 18px rgba(0, 0, 0, 0.3);
+}
+
+.active-group-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.active-group-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--accent-blue);
+    font-weight: 600;
+}
+
+.active-group-name {
+    font-size: 22px;
+    font-family: 'Libre Baskerville', serif;
+    font-weight: 500;
+    color: var(--text-bone);
+    margin: 4px 0;
+}
+
+.active-group-id {
+    font-family: 'Fira Code', monospace;
+    font-size: 12px;
+    color: var(--text-fog);
+}
+
+.active-group-card .btn-accent {
+    height: var(--btn-height-lg);
+    min-height: var(--btn-height-lg);
+    padding: 0 22px;
+    font-size: 13.5px;
+}
+
+/* Блок действия для преподавателей */
+.teacher-action-row {
+    margin-top: 16px;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.teacher-action-row .btn-primary {
+    height: var(--btn-height-lg);
+    min-height: var(--btn-height-lg);
+    padding: 0 22px;
+    font-size: 13.5px;
+}
+
+/* Элементы кода и клавиш kbd */
+kbd {
+    display: inline-block;
+    padding: 2px 6px;
+    font-family: 'Fira Code', monospace;
+    font-size: 11px;
+    line-height: 1.2;
+    color: var(--text-bone);
+    background-color: var(--bg-iron);
+    border: 1px solid var(--border-pewter);
+    border-radius: var(--radius-sm);
+    box-shadow: 0 1px 0 var(--border-pewter);
+}
+
+code {
+    font-family: 'Fira Code', monospace;
+    font-size: 12px;
+    color: #4ade80;
+}
+
+/* ==========================================================================
+   Адаптивные медиа-запросы (max-width: 900px, max-width: 600px)
+   ========================================================================== */
+
+@media (max-width: 900px) {
+    .hero-split {
+        grid-template-columns: 1fr;
+        gap: 24px;
+    }
+
+    .art-deck-container {
+        height: 320px;
+    }
+
+    .wizard-steps-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .hero-stats-row {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+    }
+}
+
+@media (max-width: 600px) {
+    body {
+        padding: 20px 14px;
+    }
+
+    h1 {
+        font-size: 24px;
+        line-height: 1.25;
+        margin-bottom: 8px;
+    }
+
+    h2 {
+        font-size: 18px;
+        margin-bottom: 12px;
+    }
+
+    .header-bar {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 14px;
+        padding-bottom: 20px;
+        margin-bottom: 24px;
+    }
+
+    .header-left {
+        max-width: 100%;
+    }
+
+    .header-actions,
+    .header-bar > div:last-child {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .header-actions .btn-primary,
+    .header-actions .btn-ghost,
+    .header-bar > div:last-child .btn-primary,
+    .header-bar > div:last-child .btn-ghost {
+        width: 100%;
+        text-align: center;
+    }
+
+    .teacher-action-row {
+        width: 100%;
+    }
+
+    .teacher-action-row .btn-primary {
+        width: 100%;
+    }
+
+    .hero-stats-row {
+        grid-template-columns: 1fr;
+        gap: 8px;
+    }
+
+    .stats-grid {
+        grid-template-columns: 1fr;
+        gap: 8px;
+    }
+
+    .art-deck-container {
+        height: 250px;
+        overflow: hidden;
+    }
+
+    .tilted-card {
+        width: 140px;
+        height: 196px;
+    }
+
+    .deck-card-1 {
+        top: 15px;
+        left: 10px;
+    }
+
+    .deck-card-2 {
+        top: 10px;
+        right: 15px;
+    }
+
+    .deck-card-3 {
+        bottom: 15px;
+        left: 20px;
+    }
+
+    .deck-card-4 {
+        bottom: 10px;
+        right: 15px;
+    }
+
+    .button-row {
+        flex-direction: column;
+        width: 100%;
+        gap: 8px;
+    }
+
+    .button-row button,
+    .button-row a,
+    .btn-primary,
+    .btn-accent,
+    .btn-ghost,
+    .btn-secondary,
+    .btn-success {
+        white-space: normal;
+        text-align: center;
+    }
+
+    .button-row .btn-primary,
+    .button-row .btn-ghost,
+    .button-row .btn-secondary {
+        width: 100%;
+    }
+
+    .active-group-card {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 14px;
+    }
+
+    .active-group-card button {
+        width: 100%;
+    }
+
+    .code-snippet-box {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 8px;
+    }
+
+    .code-snippet-box code {
+        white-space: pre-wrap;
+        word-break: break-all;
+    }
+
+    .code-snippet-box .btn-copy {
+        width: 100%;
+    }
+
+    .level-tabs-row {
+        gap: 6px;
+    }
+
+    .level-tab-btn {
+        flex: 1 1 calc(50% - 6px);
+        text-align: center;
+        padding: 6px 8px;
+    }
+
+    .card,
+    .hero-info-card {
+        padding: 16px;
+    }
+}

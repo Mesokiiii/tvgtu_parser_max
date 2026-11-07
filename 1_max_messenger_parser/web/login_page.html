@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Панель управления расписанием MAX — ТвГТУ</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header class="header-bar">
+            <div class="header-left">
+                <span class="brand-badge">Вариант 1 &bull; Мессенджер МАКС</span>
+                <h1>Управление выгрузкой расписания</h1>
+                <p class="subtitle">Подключение сессии MAX, выбор любых академических групп (включая магистратуру) и расписание преподавателей</p>
+            </div>
+            <div class="header-actions">
+                <a href="http://localhost:8080" class="btn-primary">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
+                    Перейти на http://localhost:8080
+                </a>
+                <a href="https://web.max.ru" target="_blank" class="btn-ghost">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+                    Открыть web.max.ru
+                </a>
+            </div>
+        </header>
+
+        <!-- Предупреждение о протоколе file:/// при отсутствии сервера -->
+        <div id="protocol-banner" class="status-banner status-info" style="display: none; margin-bottom: 24px;">
+            <strong>Режим локального просмотра файла (file:///):</strong> Для отправки запросов и автоматического сохранения токенов должен быть запущен локальный сервер (<code>python main.py</code>). Если сервер запущен, откройте страницу через <a href="http://localhost:8080" style="color: #fff; text-decoration: underline;">http://localhost:8080</a>.
+        </div>
+
+        <!-- Верхний блок Hero Split Layout: спецификация шлюза и наклонная арт-композиция -->
+        <div class="hero-split">
+            <section class="hero-info-card">
+                <h2>Шлюз мини-приложения МАКС</h2>
+                <p class="subtitle" style="margin-bottom: 16px;">
+                    Выгрузка данных выполняется через защищенный API-шлюз расписания с автоматическим обменом подписи WebAppData на токены доступа.
+                </p>
+
+                <div class="hero-stats-row">
+                    <div class="hero-stat-box">
+                        <div class="hero-stat-label">auth_token</div>
+                        <div class="hero-stat-value">600 сек (10 мин)</div>
+                    </div>
+                    <div class="hero-stat-box">
+                        <div class="hero-stat-label">refresh_token</div>
+                        <div class="hero-stat-value">43 200 сек (12 ч)</div>
+                    </div>
+                    <div class="hero-stat-box">
+                        <div class="hero-stat-label">Шлюз расписания</div>
+                        <div class="hero-stat-value" style="font-size: 13px;">schedule.vk-apps.com</div>
+                    </div>
+                </div>
+
+                <div class="code-snippet-box">
+                    <code id="console-cmd">copy(document.querySelector('iframe[src*="schedule"]').src)</code>
+                    <button class="btn-copy" onclick="CopyConsoleCommand()" title="Скопировать команду в буфер">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                        Копировать скрипт F12
+                    </button>
+                </div>
+            </section>
+
+            <!-- Правая колонка: наклонная арт-композиция -->
+            <aside class="art-deck-container">
+                <div class="art-deck-glow"></div>
+
+                <div class="tilted-card deck-card-1">
+                    <img src="assets/image1.png" alt="Сессия МАКС" loading="lazy">
+                    <div class="tilted-caption">
+                        <span class="tilted-num">01</span>
+                        <span class="tilted-title">Сессия МАКС</span>
+                    </div>
+                </div>
+
+                <div class="tilted-card deck-card-2">
+                    <img src="assets/image2.png" alt="Ключ авторизации" loading="lazy">
+                    <div class="tilted-caption">
+                        <span class="tilted-num">02</span>
+                        <span class="tilted-title">Ключ авторизации</span>
+                    </div>
+                </div>
+
+                <div class="tilted-card deck-card-3">
+                    <img src="assets/image3.png" alt="Парсинг сетки" loading="lazy">
+                    <div class="tilted-caption">
+                        <span class="tilted-num">03</span>
+                        <span class="tilted-title">Парсинг сетки</span>
+                    </div>
+                </div>
+
+                <div class="tilted-card deck-card-4">
+                    <img src="assets/image4.png" alt="Экспорт отчета" loading="lazy">
+                    <div class="tilted-caption">
+                        <span class="tilted-num">04</span>
+                        <span class="tilted-title">Экспорт отчета</span>
+                    </div>
+                </div>
+            </aside>
+        </div>
+
+        <!-- Полноразмерный контент на всю ширину страницы (1200px) -->
+        <main class="content-fullwidth">
+            
+            <!-- Блок 1: Пошаговый мастер авторизации в MAX -->
+            <section class="card">
+                <span class="section-tag">Инструкция для пользователя</span>
+                <h2>Как выгрузить расписание из МАКС в 3 простых шага</h2>
+                <p class="subtitle" style="margin-bottom: 20px;">
+                    В мессенджере МАКС расписание работает внутри мини-приложения. Чтобы скрипт мог выгружать актуальные данные, передайте ему рабочую ссылку или параметры сессии:
+                </p>
+
+                <div class="wizard-steps-grid">
+                    <div class="wizard-step-card">
+                        <div class="step-num-badge">Шаг 1</div>
+                        <div class="step-title">Открыть бота</div>
+                        <p class="step-desc">Перейдите в чат с официальным ботом расписания и нажмите кнопку «Открыть».</p>
+                        <div class="step-action">
+                            <a href="https://max.ru/vuz_schedule_bot" target="_blank" class="btn-accent">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+                                @vuz_schedule_bot
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="wizard-step-card">
+                        <div class="step-num-badge">Шаг 2</div>
+                        <div class="step-title">Скопировать ссылку</div>
+                        <p class="step-desc">Нажмите <kbd>F12</kbd> в браузере &rarr; вкладка <strong>Console</strong> &rarr; вставьте команду и нажмите <kbd>Enter</kbd>:</p>
+                        <div class="step-action">
+                            <div class="code-snippet-box">
+                                <code id="console-cmd-step">copy(document.querySelector('iframe[src*="schedule"]').src)</code>
+                                <button class="btn-copy" onclick="CopyConsoleCommand()" title="Скопировать команду в буфер">
+                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                                    Копировать
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="wizard-step-card">
+                        <div class="step-num-badge">Шаг 3</div>
+                        <div class="step-title">Подключить сессию</div>
+                        <p class="step-desc">Вставьте скопированное значение ниже или нажмите кнопку автоматической вставки:</p>
+                        <div class="step-action">
+                            <button class="btn-primary" onclick="PasteFromClipboardAndSave()">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect></svg>
+                                Вставить из буфера и войти
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Ручной ввод -->
+                <div style="margin-top: 24px;">
+                    <label for="token-input" style="font-weight: 500; font-size: 13px; color: var(--text-bone); display: block; margin-bottom: 8px;">
+                        Поле ручного ввода (ссылка фрейма, строка WebAppData, cURL или токен JWT):
+                    </label>
+                    <textarea id="token-input" rows="2" placeholder="https://digital-uni-schedule.cdn-vk.ru/#WebAppData=... или Bearer eyJ..."></textarea>
+                    
+                    <div class="button-row">
+                        <button class="btn-primary" onclick="SaveTokens()">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
+                            Сохранить и подключить
+                        </button>
+                        <button class="btn-ghost" onclick="RefreshToken()">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>
+                            Продлить токен (refresh)
+                        </button>
+                        <button class="btn-ghost" onclick="ToggleManualHelp()">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+                            Как найти через Elements / Network?
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Раскрываемая подсказка для ручного поиска через DevTools -->
+                <div id="manual-help-accordion" class="editorial-note" style="display: none; margin-top: 16px;">
+                    <strong>Альтернативные варианты извлечения ссылки:</strong>
+                    <ul style="margin: 8px 0 0 18px; line-height: 1.6;">
+                        <li><strong>Через вкладку Elements:</strong> Нажмите <kbd>F12</kbd> &rarr; <kbd>Ctrl+F</kbd> &rarr; введите <code>digital-uni-schedule</code> &rarr; скопируйте атрибут <code>src="..."</code> у найденного тега <code>&lt;iframe&gt;</code>.</li>
+                        <li><strong>Через вкладку Network:</strong> Нажмите <kbd>F12</kbd> &rarr; вкладка <strong>Network</strong> &rarr; фильтр <code>schedule</code> &rarr; кликните правой кнопкой мыши по запросу <code>schedules</code> или <code>auth</code> &rarr; <em>Copy &rarr; Copy as cURL</em> &rarr; вставьте сюда.</li>
+                    </ul>
+                </div>
+
+                <div id="status-panel" class="status-banner" style="display: none; margin-top: 16px;"></div>
+            </section>
+
+            <!-- Блок 2: Выбор учебной группы (включая Магистратуру) -->
+            <section class="card">
+                <span class="section-tag">Академические группы ТвГТУ</span>
+                <h2>Выбор учебной группы</h2>
+                <p class="subtitle" style="margin-bottom: 16px;">
+                    Выберите любую академическую группу университета из полного университетского каталога (463 группы: магистратура, бакалавриат, специалитет, колледж СПО):
+                </p>
+
+                <!-- Фильтры по уровням подготовки -->
+                <div class="level-tabs-row">
+                    <button class="level-tab-btn active" data-level="" onclick="SetLevelFilter('', this)">Все группы</button>
+                    <button class="level-tab-btn" data-level="Б" onclick="SetLevelFilter('Б', this)">Бакалавриат (Б)</button>
+                    <button class="level-tab-btn" data-level="М" onclick="SetLevelFilter('М', this)">Магистратура (М)</button>
+                    <button class="level-tab-btn" data-level="С" onclick="SetLevelFilter('С', this)">Специалитет (С)</button>
+                    <button class="level-tab-btn" data-level="СПО" onclick="SetLevelFilter('СПО', this)">Колледж (СПО)</button>
+                </div>
+
+                <!-- Поле поиска группы с выпадающими подсказками -->
+                <div class="group-search-wrapper" style="position: relative; margin-top: 14px;">
+                    <input type="text" id="group-search-input" class="search-input" placeholder="Поиск по шифру (например: М.ПИН, Б.ПИН.ИИ, 25.16, ИВТ)..." autocomplete="off" oninput="HandleGroupSearchInput(this.value)">
+                    <div id="group-autocomplete-dropdown" class="autocomplete-dropdown" style="display: none;"></div>
+                </div>
+
+                <!-- Чипы быстрого выбора популярных групп, включая магистратуру -->
+                <div class="quick-chips-row">
+                    <span class="chip-label">Популярные группы:</span>
+                    <span class="quick-chip chip-master" onclick="PickGroup('М.ПИН.РИС.25.09', 58189)">М.ПИН.РИС.25.09 (Магистр)</span>
+                    <span class="quick-chip chip-master" onclick="PickGroup('М.ИВТ.ИПО.25.05', 58185)">М.ИВТ.ИПО.25.05 (Магистр)</span>
+                    <span class="quick-chip chip-master" onclick="PickGroup('М.БСТ.ИДМ.25.10', 58190)">М.БСТ.ИДМ.25.10 (Магистр)</span>
+                    <span class="quick-chip" onclick="PickGroup('Б.ПИН.ИИ.25.16', 33318)">Б.ПИН.ИИ.25.16 (Бакалавр)</span>
+                    <span class="quick-chip" onclick="PickGroup('Б.ИВТ.ВМКСС.25.03', 65229)">Б.ИВТ.ВМКСС.25.03</span>
+                    <span class="quick-chip" onclick="PickGroup('С.РСК.РСК.24.05', 1746)">С.РСК.РСК.24.05 (Специалитет)</span>
+                </div>
+
+                <!-- Карточка активной выбранной группы -->
+                <div class="active-group-card">
+                    <div class="active-group-info">
+                        <div class="active-group-label">Текущая выбранная группа</div>
+                        <div id="active-group-name" class="active-group-name">Б.ПИН.ИИ.25.16</div>
+                        <div id="active-group-id-badge" class="active-group-id">ID в MAX: 33318</div>
+                    </div>
+                    <button class="btn-accent" onclick="FetchSchedule()">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                        Выгрузить расписание группы в Excel / JSON
+                    </button>
+                </div>
+            </section>
+
+            <!-- Блок 3: Поиск расписания преподавателя -->
+            <section class="card">
+                <span class="section-tag">Преподавательский состав</span>
+                <h2>Поиск расписания преподавателя</h2>
+                <p class="subtitle" style="margin-bottom: 14px;">
+                    Сквозной поиск сетки занятий преподавателя по университетскому каталогу кафедр:
+                </p>
+
+                <div style="position: relative;">
+                    <input type="text" id="teacher-search-input" class="search-input" placeholder="Введите фамилию (например: Пиджакова, Крутских, Лебедев, Созонов)..." autocomplete="off" oninput="HandleTeacherSearchInput(this.value)">
+                    <div id="teacher-autocomplete-dropdown" class="autocomplete-dropdown" style="display: none;"></div>
+                </div>
+
+                <div class="quick-chips-row">
+                    <span class="chip-label">Преподаватели:</span>
+                    <span class="quick-chip" onclick="PickTeacher('Пиджакова Любовь Михайловна')">Пиджакова Л.М.</span>
+                    <span class="quick-chip" onclick="PickTeacher('Крутских Елена Игоревна')">Крутских Е.И.</span>
+                    <span class="quick-chip" onclick="PickTeacher('Лебедев Владимир Владимирович')">Лебедев В.В. (ХТФ)</span>
+                    <span class="quick-chip" onclick="PickTeacher('Созонов Михаил Константинович')">Созонов М.К.</span>
+                    <span class="quick-chip" onclick="PickTeacher('Васильев Андрей Игоревич')">Васильев А.И.</span>
+                </div>
+
+                <div class="teacher-action-row">
+                    <button class="btn-primary" onclick="FetchTeacherSchedule()">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                        Выгрузить расписание преподавателя в Excel
+                    </button>
+                </div>
+            </section>
+
+            <!-- Блок 4: Терминал параметров tokens.json -->
+            <section class="terminal-window">
+                <div class="terminal-header">
+                    <div class="terminal-dot"></div>
+                    <div class="terminal-dot"></div>
+                    <div class="terminal-dot"></div>
+                    <div class="terminal-title">tokens.json &mdash; конфигурация текущей сессии</div>
+                </div>
+                <pre id="tokens-view" class="terminal-content">// Загрузка параметров конфигурации...</pre>
+            </section>
+        </main>
+    </div>
+
+    <!-- Клиентский скрипт управления -->
+    <script src="app.js"></script>
+</body>
+</html>
