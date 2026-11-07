@@ -50,7 +50,8 @@ maxrasp/
 | **Аутентификация** | Требуется (`WebAppData`, HMAC-SHA256, JWT) | Не требуется (свободный доступ к справочнику) |
 | **Срок жизни ключей** | `auth_token`: 600 с (10 мин), `refresh_token`: 12 ч | Бессрочно |
 | **Охват групп** | 463 группы (бакалавриат, магистратура, СПО и др.) | 438 групп в реестре шлюза |
-| **Выходные форматы** | Стилизованный Excel (`.xlsx`), JSON | Стилизованный Excel (`.xlsx`, `.xls`), JSON |
+| **Выходные форматы** | Стилизованный Excel (`.xlsx`), JSON | Стилизованный Excel (`.xlsx`, `.xls`), JSON, iCalendar (`.ics`), CalDAV (Radicale) |
+| **Контейнеризация** | — | Docker, Docker Compose (с CalDAV-сервером Radicale), настройка через `.env` |
 | **Пользовательский интерфейс** | Локальный Web UI (`http://127.0.0.1:8080`) | Автономный HTML-просмотрщик (`web_viewer.html`) |
 
 ---
@@ -171,6 +172,10 @@ python main.py --teacher Пиджакова
 # Запуск веб-сервера Варианта 1 с интерактивной панелью
 cd 1_max_messenger_parser
 python main.py --server
+
+# Запуск Варианта 2 через Docker Compose (с CalDAV-сервером Radicale):
+cd 2_tstu_api_direct
+docker compose up -d
 
 # Открытие просмотрщика Варианта 2
 # Откройте файл 2_tstu_api_direct/web_viewer.html в любом браузере

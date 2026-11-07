@@ -1,0 +1,53 @@
+version: "3.8"
+
+services:
+  # CalDAV/CardDAV сервер Radicale для хранения и синхронизации расписания
+  radicale:
+    image: tomsquest/docker-radicale:latest
+    container_name: tstu_radicale
+    restart: unless-stopped
+    ports:
+      - "5232:5232"
+    volumes:
+      - radicale_data:/data
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:5232 || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  # Сервис прямого парсинга и экспорта расписания ТвГТУ
+  tstu-schedule:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: tstu_schedule_service
+    restart: on-failure
+    ports:
+      - "${PORT:-8081}:${PORT:-8081}"
+    volumes:
+      - ./output:/app/output
+      - ./data:/app/data
+    env_file:
+      - .env
+    environment:
+      - SCHEDULE_GROUP=${SCHEDULE_GROUP:-Б.ПИН.ИИ.25.16}
+      - SCHEDULE_TEACHER=${SCHEDULE_TEACHER:-}
+      - RADICALE_URL=${RADICALE_URL:-http://radicale:5232}
+      - RADICALE_USER=${RADICALE_USER:-tstu}
+      - RADICALE_PASSWORD=${RADICALE_PASSWORD:-tstu_password}
+      - RADICALE_CALENDAR=${RADICALE_CALENDAR:-schedule}
+      - EXPORT_RADICALE=${EXPORT_RADICALE:-true}
+      - EXPORT_ICS=${EXPORT_ICS:-true}
+      - EXPORT_EXCEL=${EXPORT_EXCEL:-true}
+      - EXPORT_JSON=${EXPORT_JSON:-true}
+      - SEMESTER_START_DATE=${SEMESTER_START_DATE:-2026-09-01}
+      - SEMESTER_END_DATE=${SEMESTER_END_DATE:-2027-01-31}
+      - SYNC_INTERVAL=${SYNC_INTERVAL:-0}
+      - RUN_SERVER=${RUN_SERVER:-false}
+      - PORT=${PORT:-8081}
+    depends_on:
+      - radicale
+
+volumes:
+  radicale_data:

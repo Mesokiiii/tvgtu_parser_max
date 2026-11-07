@@ -10,6 +10,7 @@ from parsers.html_schedule_parser import HtmlScheduleParser
 from parsers.teacher_schedule_extractor import TeacherScheduleExtractor
 from exporters.excel_exporter import ExcelScheduleExporter
 from exporters.json_exporter import JsonScheduleExporter
+from exporters.radicale_exporter import RadicaleScheduleExporter
 from models.lesson import Lesson, GroupSchedule
 
 
@@ -19,7 +20,7 @@ class TstuScheduleService:
     Использует принцип разделения обязанностей (Single Responsibility) и внедрение зависимостей.
     """
 
-    def __init__(self, pWebClient=None, pGroupsParser=None, pScheduleParser=None, pTeacherExtractor=None, pExcelExporter=None, pJsonExporter=None):
+    def __init__(self, pWebClient=None, pGroupsParser=None, pScheduleParser=None, pTeacherExtractor=None, pExcelExporter=None, pJsonExporter=None, pRadicaleExporter=None):
         """
         Конструктор сервиса. Позволяет передавать собственные реализации зависимостей.
         """
@@ -29,6 +30,7 @@ class TstuScheduleService:
         self.teacherExtractor = pTeacherExtractor if pTeacherExtractor else TeacherScheduleExtractor()
         self.excelExporter = pExcelExporter if pExcelExporter else ExcelScheduleExporter()
         self.jsonExporter = pJsonExporter if pJsonExporter else JsonScheduleExporter()
+        self.radicaleExporter = pRadicaleExporter if pRadicaleExporter else RadicaleScheduleExporter()
         self.cachedGroupsMap = {}
     # end of __init__
 
@@ -259,14 +261,15 @@ class TstuScheduleService:
         # end of if pGroupNameOrId and not pScanPoolGroups
 
         for grp in targetGroups:
+            grpFallback = os.path.join(baseDir, "output", "groups", f"schedule_{grp}.json")
             try:
-                # Опрос шлюза ТвГТУ с оптимизированным таймаутом
-                grpSchedule = self.fetchSchedule(grp, pCacheFilePath=pCacheFilePath, pCustomTimeout=2)
+                # Опрос шлюза ТвГТУ с надежным таймаутом
+                grpSchedule = self.fetchSchedule(grp, pCacheFilePath=pCacheFilePath, pFallbackJsonPath=grpFallback, pCustomTimeout=5)
                 schedulesList.append(grpSchedule)
             except Exception:
                 if grp == "Б.ПИН.ИИ.25.16" and pFallbackJsonPath and os.path.exists(pFallbackJsonPath):
                     try:
-                        fallbackSchedule = self.fetchSchedule(grp, pFallbackJsonPath=pFallbackJsonPath, pCustomTimeout=1)
+                        fallbackSchedule = self.fetchSchedule(grp, pFallbackJsonPath=pFallbackJsonPath, pCustomTimeout=2)
                         schedulesList.append(fallbackSchedule)
                     except:
                         pass
@@ -378,6 +381,25 @@ class TstuScheduleService:
         """Экспорт расписания в JSON."""
         self.jsonExporter.export(pGroupSchedule, pOutputFilePath)
     # end of saveToJson
+
+    def saveToIcs(self, pGroupSchedule, pOutputFilePath, pSemesterStartDate=None, pSemesterEndDate=None, pAlarmMinutes=None):
+        """Экспорт расписания в формат iCalendar (.ics)."""
+        return self.radicaleExporter.exportIcs(pGroupSchedule, pOutputFilePath, pSemesterStartDate, pSemesterEndDate, pAlarmMinutes)
+    # end of saveToIcs
+
+    def syncToRadicale(self, pGroupSchedule, pRadicaleUrl=None, pUsername=None, pPassword=None, pCalendarName=None, pSemesterStartDate=None, pSemesterEndDate=None, pAlarmMinutes=None):
+        """Прямая сетевая выгрузка расписания в CalDAV-сервер Radicale."""
+        return self.radicaleExporter.syncToRadicale(
+            pGroupSchedule=pGroupSchedule,
+            pRadicaleUrl=pRadicaleUrl,
+            pUsername=pUsername,
+            pPassword=pPassword,
+            pCalendarName=pCalendarName,
+            pSemesterStartDate=pSemesterStartDate,
+            pSemesterEndDate=pSemesterEndDate,
+            pAlarmMinutes=pAlarmMinutes
+        )
+    # end of syncToRadicale
 
 # end of class TstuScheduleService
 # end of ScheduleService.py

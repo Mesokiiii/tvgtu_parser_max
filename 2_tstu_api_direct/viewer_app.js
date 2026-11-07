@@ -1001,6 +1001,149 @@ function ExportTeacherCsv() {
     TriggerDownload(blob, fileName);
 } // end of ExportTeacherCsv
 
+// Экспорт расписания в формат iCalendar (.ics) для импорта в Radicale, Apple Calendar, Google Календарь
+function ExportIcs() {
+    let rowsToExport = [];
+    let titleName = "";
+    let fileName = "";
+
+    if (gActiveTeacherData) {
+        titleName = `Преподаватель ${gActiveTeacherData.fullName}`;
+        fileName = `Расписание_преподавателя_${gActiveTeacherData.fullName.replace(/\s+/g, '_')}.ics`;
+        for (const [dayName, lessons] of Object.entries(gActiveTeacherData.schedule)) {
+            lessons.forEach(item => {
+                rowsToExport.push({
+                    day: dayName,
+                    time: item.time,
+                    week: item.week,
+                    type: item.type,
+                    subject: item.subject,
+                    classroom: item.classroom,
+                    teacher: gActiveTeacherData.fullName,
+                    group: item.group || "Общий поток"
+                });
+            });
+        }
+    } else {
+        titleName = `Группа ${gCurrentGroup.name}`;
+        fileName = `Расписание_группы_${gCurrentGroup.name.replace(/\s+/g, '_')}.ics`;
+        const dayCards = document.querySelectorAll("#schedule-days-container .day-card");
+        dayCards.forEach(card => {
+            const dayName = card.querySelector(".day-header") ? card.querySelector(".day-header").textContent.trim() : "";
+            const rows = card.querySelectorAll("tbody tr");
+            rows.forEach(row => {
+                rowsToExport.push({
+                    day: dayName,
+                    time: row.querySelector(".col-time") ? row.querySelector(".col-time").textContent.trim() : "",
+                    week: row.querySelector(".pill-indicator") ? row.querySelector(".pill-indicator").textContent.trim() : "Обе",
+                    type: row.cells[2] ? row.cells[2].textContent.trim() : "",
+                    subject: row.querySelector(".col-subject") ? row.querySelector(".col-subject").textContent.trim() : "",
+                    classroom: row.querySelector(".col-classroom") ? row.querySelector(".col-classroom").textContent.trim() : "",
+                    teacher: row.querySelector(".col-teacher") ? row.querySelector(".col-teacher").textContent.trim() : "",
+                    group: row.querySelector(".col-group") ? row.querySelector(".col-group").textContent.trim() : gCurrentGroup.name
+                });
+            });
+        });
+    }
+
+    if (rowsToExport.length === 0) {
+        alert("Нет занятий для экспорта в календарь.");
+        return;
+    }
+
+    const dayMap = { "понедельник": 0, "вторник": 1, "среда": 2, "четверг": 3, "пятница": 4, "суббота": 5, "воскресенье": 6 };
+    const baseMonday = new Date(2026, 7, 31); // 2026-08-31
+    const semEndStr = "20270131T235959Z";
+
+    let icsLines = [
+        "BEGIN:VCALENDAR",
+        "VERSION:2.0",
+        "PRODID:-//TvGTU//Schedule Web Viewer//RU",
+        "CALSCALE:GREGORIAN",
+        "METHOD:PUBLISH",
+        `X-WR-CALNAME:Расписание ${titleName}`,
+        "X-WR-TIMEZONE:Europe/Moscow",
+        "BEGIN:VTIMEZONE",
+        "TZID:Europe/Moscow",
+        "X-LIC-LOCATION:Europe/Moscow",
+        "BEGIN:STANDARD",
+        "TZOFFSETFROM:+0300",
+        "TZOFFSETTO:+0300",
+        "TZNAME:MSK",
+        "DTSTART:19700101T000000",
+        "END:STANDARD",
+        "END:VTIMEZONE"
+    ];
+
+    rowsToExport.forEach((item, idx) => {
+        const dKey = (item.day || '').trim().toLowerCase();
+        const dIdx = (dKey in dayMap) ? dayMap[dKey] : 0;
+        const isBlue = item.week && item.week.toLowerCase().includes("син");
+        const isRed = item.week && item.week.toLowerCase().includes("крас");
+
+        let eventDate = new Date(baseMonday);
+        if (isBlue) {
+            eventDate.setDate(baseMonday.getDate() + 7 + dIdx);
+        } else {
+            eventDate.setDate(baseMonday.getDate() + dIdx);
+            if (eventDate < new Date(2026, 8, 1)) {
+                eventDate.setDate(eventDate.getDate() + (isRed ? 14 : 7));
+            }
+        }
+
+        const timeParts = (item.time || '08:30').match(/(\d{1,2}):(\d{2})/g) || ['08:30'];
+        const startMatch = timeParts[0].split(':');
+        const startH = parseInt(startMatch[0], 10);
+        const startM = parseInt(startMatch[1], 10);
+
+        let endH, endM;
+        if (timeParts.length > 1) {
+            const endMatch = timeParts[1].split(':');
+            endH = parseInt(endMatch[0], 10);
+            endM = parseInt(endMatch[1], 10);
+        } else {
+            const totalEnd = startH * 60 + startM + 95;
+            endH = Math.floor(totalEnd / 60) % 24;
+            endM = totalEnd % 60;
+        }
+
+        const y = eventDate.getFullYear();
+        const m = String(eventDate.getMonth() + 1).padStart(2, '0');
+        const d = String(eventDate.getDate()).padStart(2, '0');
+        const dtStart = `${y}${m}${d}T${String(startH).padStart(2, '0')}${String(startM).padStart(2, '0')}00`;
+        const dtEnd = `${y}${m}${d}T${String(endH).padStart(2, '0')}${String(endM).padStart(2, '0')}00`;
+
+        const rrule = (isRed || isBlue)
+            ? `FREQ=WEEKLY;INTERVAL=2;UNTIL=${semEndStr}`
+            : `FREQ=WEEKLY;INTERVAL=1;UNTIL=${semEndStr}`;
+
+        const summary = `[${item.type || 'Пара'}] ${item.subject}`;
+        const desc = `Дисциплина: ${item.subject}\\nПреподаватель: ${item.teacher}\\nАудитория: ${item.classroom}\\nГруппа: ${item.group}\\nТип: ${item.type}`;
+        const uid = `tstu-web-${y}${m}${d}-${startH}${startM}-${idx}@tstu.tver.ru`;
+
+        icsLines.push("BEGIN:VEVENT");
+        icsLines.push(`UID:${uid}`);
+        icsLines.push(`DTSTAMP:${new Date().toISOString().replace(/[-:]/g, '').split('.')[0]}Z`);
+        icsLines.push(`DTSTART;TZID=Europe/Moscow:${dtStart}`);
+        icsLines.push(`DTEND;TZID=Europe/Moscow:${dtEnd}`);
+        icsLines.push(`RRULE:${rrule}`);
+        icsLines.push(`SUMMARY:${summary.replace(/[\\;,]/g, '\\$&')}`);
+        icsLines.push(`DESCRIPTION:${desc.replace(/[\\;,]/g, '\\$&')}`);
+        icsLines.push(`LOCATION:${(item.classroom || '').replace(/[\\;,]/g, '\\$&')}`);
+        icsLines.push("STATUS:CONFIRMED");
+        icsLines.push("END:VEVENT");
+    });
+
+    icsLines.push("END:VCALENDAR");
+    const icsContent = icsLines.join("\r\n");
+    const blob = new Blob([icsContent], { type: "text/calendar;charset=utf-8" });
+    TriggerDownload(blob, fileName);
+} // end of ExportIcs
+
+const ExportTeacherIcs = ExportIcs;
+const ExportGroupIcs = ExportIcs;
+const ExportGroupExcel = ExportTeacherExcel;
+
 // Печать или сохранение расписания в PDF
 function PrintSchedule() {
     window.print();
